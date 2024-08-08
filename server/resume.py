@@ -18,7 +18,8 @@ font_set = {
 }
 
 def latexify(text: str) -> str:
-    text = text.replace('&', r'\&')\
+    text = text.replace('\\', r'\textbackslash')\
+        .replace('&', r'\&')\
         .replace('%', r'\%')\
         .replace('$', r'\$')\
         .replace('#', r'\#')\
@@ -26,8 +27,8 @@ def latexify(text: str) -> str:
         .replace('{', r'\{')\
         .replace('}', r'\}')\
         .replace('~', r'\textasciitilde')\
-        .replace('^', r'\^')\
-        .replace('\\', r'\textbackslash')
+        .replace('^', r'\^')
+        
     
     return r"{}".format(text)
 
@@ -151,9 +152,9 @@ class Resume:
     }
     '''
     def add_personal_info(self, personal_info):
-        name = personal_info.get('name', '')
-        phone = personal_info.get('phone', '')
-        email = personal_info.get('email', '')
+        name = latexify(personal_info.get('name', ''))
+        phone = latexify(personal_info.get('phone', ''))
+        email = latexify(personal_info.get('email', ''))
         links = personal_info.get('links', [])
         
         self.code += r"\begin{center}" + os.linesep
@@ -168,7 +169,7 @@ class Resume:
             self.code += r"\href{mailto:" + email + r"}{\underline{" + email + r"}} $|$ " + os.linesep
         
         for link in links:
-            self.code += r"\href{" + link['url'] + r"}{\underline{" + link['text'] + r"}} $|$ " + os.linesep
+            self.code += r"\href{" + latexify(link['url']) + r"}{\underline{" + latexify(link['text']) + r"}} $|$ " + os.linesep
         
         self.code += r"\end{center}" + os.linesep
         
@@ -202,7 +203,7 @@ class Resume:
             self.code += r"\resumeItemListStart" + os.linesep
             tabs += 4
             for item in edu['details']:
-                self.code += (" "*tabs) + r"\resumeItem{" + item + r"}" + os.linesep
+                self.code += (" "*tabs) + r"\resumeItem{" + latexify(item) + r"}" + os.linesep
             tabs -= 4
             self.code += r"\resumeItemListEnd" + os.linesep
     
@@ -217,6 +218,21 @@ class Resume:
     
 if __name__ == '__main__':
     resume = Resume(font_size=11, font='fira')
+    resume.add_personal_info({
+        "name": "Anish Sahoo",
+        "phone": "123-456-7890",
+        "email": "anish@email.email",
+        "links": [
+            {
+                "url": "https://www.linkedin.com/in/anish-sahoo",
+                "text": "linkedin.com/in/anish-sahoo"  
+            }, 
+            {
+                "url": "https://asahoo.dev",
+                "text": "asahoo.dev"
+            }
+        ]
+    })
     resume.add_education([
         {
             "school": 'Northeastern University',
@@ -225,7 +241,7 @@ if __name__ == '__main__':
             "location": 'Boston, MA',
             "details": [
                 'Major GPA: 3.95',
-                'Coursework: Machine Learning, Artificial Intelligence',
+                'Coursework: Machine Learning & Artificial Intelligence, 4% acceptance rate',
             ],
         }
     ])
