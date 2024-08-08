@@ -16,5 +16,5 @@ def get_data():
     # ...   
     return 'Received JSON data successfully'
 
-if __name__ == '__main__':
+if __name__ == '__main__':      
     app.run()
