@@ -5,6 +5,8 @@
 # % License : MIT
 # %------------------------
 
+import os
+
 font_set = {
     'fira' : r'\usepackage[sfdefault]{FiraSans}', 
     'roboto': r'\usepackage[sfdefault]{roboto}',
@@ -15,6 +17,20 @@ font_set = {
     '': ''
 }
 
+def latexify(text: str) -> str:
+    text = text.replace('&', r'\&')\
+        .replace('%', r'\%')\
+        .replace('$', r'\$')\
+        .replace('#', r'\#')\
+        .replace('_', r'\_')\
+        .replace('{', r'\{')\
+        .replace('}', r'\}')\
+        .replace('~', r'\textasciitilde')\
+        .replace('^', r'\^')\
+        .replace('\\', r'\textbackslash')
+    
+    return r"{}".format(text)
+
 class Resume:
     def __init__(self, **kwargs):
         font_size = kwargs.get('font_size', 11)
@@ -22,6 +38,7 @@ class Resume:
         
         self.preamble = r"""
 \documentclass[letterpaper,""" + str(font_size) + r"""pt]{article}
+
 \usepackage{latexsym}
 \usepackage[empty]{fullpage}
 \usepackage{titlesec}
@@ -115,22 +132,101 @@ class Resume:
 """
         self.code = ""
     
-    def add_section(self, section):
-        self.code += section.code
-    
-    def add_skill(self, skill):
-        self.code += skill.code
-    
-    def add_work_experience(self, work_experience):
-        self.code += work_experience.code
+    '''
+    Example input:
+    {
+        "name": "Anish Sahoo",
+        "phone": "123-456-7890",
+        "email": "anish@email.email",
+        "links": [
+            {
+                "url": "https://www.linkedin.com/in/anish-sahoo",
+                "text": "linkedin.com/in/anish-sahoo"  
+            }, 
+            {
+                "url": "https://asahoo.dev"
+                "text": "asahoo.dev"
+            }
+        ]
+    }
+    '''
+    def add_personal_info(self, personal_info):
+        name = personal_info.get('name', '')
+        phone = personal_info.get('phone', '')
+        email = personal_info.get('email', '')
+        links = personal_info.get('links', [])
         
-    def add_custom_section(self, custom_section):
-        self.code += custom_section.code
+        self.code += r"\begin{center}" + os.linesep
+        
+        if name != '':
+            self.code += r"\textbf{\Huge \scshape " + name + r"} \\ \vspace{1pt}" + os.linesep
+        
+        if phone != '':
+            self.code += r"\small " + phone + r" $|$ " + os.linesep
+        
+        if email != '':
+            self.code += r"\href{mailto:" + email + r"}{\underline{" + email + r"}} $|$ " + os.linesep
+        
+        for link in links:
+            self.code += r"\href{" + link['url'] + r"}{\underline{" + link['text'] + r"}} $|$ " + os.linesep
+        
+        self.code += r"\end{center}" + os.linesep
+        
+    '''
+    Example input:
+    [
+        {
+            "school": 'Northeastern University',
+            "time": 'Expected Graduation: December 2026',
+            "degree": 'Bachelor of Science in Computer Science',
+            "location": 'Boston, MA',
+            "details": [
+                'Major GPA: 3.95',
+                'Coursework: Machine Learning, Artificial Intelligence',
+            ],
+        }
+    ]'''
+    def add_education(self, education):
+        self.code += os.linesep + r"\section{Education}" + os.linesep
+        self.code += r"\resumeSubHeadingListStart" + os.linesep
+        tabs = 0
+        for edu in education:
+            tabs += 4
+            self.code += r"\resumeSubheading{" \
+                + r"{" + latexify(edu['school'] or '') + r"}"  \
+                + r"{" + latexify(edu['time'] or '') + r"}" \
+                + r"{" + latexify(edu['degree'] or '') + r"}" \
+                + r"{" + latexify(edu['location'] or '') + r"}" \
+                + os.linesep        
+            tabs -= 4
+            self.code += r"\resumeItemListStart" + os.linesep
+            tabs += 4
+            for item in edu['details']:
+                self.code += (" "*tabs) + r"\resumeItem{" + item + r"}" + os.linesep
+            tabs -= 4
+            self.code += r"\resumeItemListEnd" + os.linesep
+    
+        self.code += r"\resumeSubHeadingListEnd" + os.linesep
+    
+    def add_page_break(self):
+        self.code += r"\pagebreak" + os.linesep
         
     def get_complete_latex(self):
-        return self.preamble + r"\begin{document}" + self.code + r"\end{document}"
-    
+        return self.preamble + r"\begin{document}"\
+            + os.linesep + self.code + os.linesep + r"\end{document}"
     
 if __name__ == '__main__':
     resume = Resume(font_size=11, font='fira')
+    resume.add_education([
+        {
+            "school": 'Northeastern University',
+            "time": 'Expected Graduation: December 2026',
+            "degree": 'Bachelor of Science in Computer Science',
+            "location": 'Boston, MA',
+            "details": [
+                'Major GPA: 3.95',
+                'Coursework: Machine Learning, Artificial Intelligence',
+            ],
+        }
+    ])
     print(resume.get_complete_latex())
