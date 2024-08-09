@@ -193,7 +193,7 @@ class Resume:
         tabs = 0
         for edu in education:
             tabs += 4
-            self.code += r"\resumeSubheading{" \
+            self.code += r"\resumeSubheading" \
                 + r"{" + latexify(edu['school'] or '') + r"}"  \
                 + r"{" + latexify(edu['time'] or '') + r"}" \
                 + r"{" + latexify(edu['degree'] or '') + r"}" \
@@ -207,6 +207,87 @@ class Resume:
             tabs -= 4
             self.code += r"\resumeItemListEnd" + os.linesep
     
+        self.code += r"\resumeSubHeadingListEnd" + os.linesep
+    
+    '''
+    Sample input:
+    [
+        {
+            "company": "Company",
+            "jobs": [
+                {
+                    "time": "June 2021 - August 2021",
+                    "title": "Software Engineer Intern",
+                    "location": "Boston, MA",
+                    "details": [
+                        "Developed a web application to manage data",
+                        "Implemented a feature to allow users to upload files"
+                    ]
+                }
+            ]
+        },
+        {
+            "company": "Company",
+            "jobs": [
+                {
+                    "time": "June 2021 - August 2021",
+                    "title": "Software Engineer Intern",
+                    "details": [
+                        "Developed a web application to manage data",
+                        "Implemented a feature to allow users to upload files"
+                    ]
+                },
+                {
+                    "time": "June 2021 - August 2021",
+                    "title": "Software Engineer Intern",
+                    "details": [
+                        "Developed a web application to manage data",
+                    ]
+                }
+            ]
+        }
+    ]
+    '''
+    def add_work_experience(self, work_experience):
+        self.code += os.linesep + r"\section{Experience}" + os.linesep
+        self.code += r"\resumeSubHeadingListStart" + os.linesep
+        tabs = 0
+        for exp in work_experience:
+            if len(exp['jobs']) > 1:
+                self.code += r"\resumeSubheadingSmall" \
+                    + r"{" + latexify(exp['company'] or '') + r"}"  \
+                    + r"{" + latexify(exp['jobs'][0]['time'] or '') + r"}"
+                self.code += os.linesep
+                for job in exp['jobs']:
+                    tabs += 4
+                    self.code += r"\resumeSubSubheading" \
+                        + r"{" + latexify(job['title'] or '') + r"}"  \
+                        + r"{" + latexify(job['time'] or '') + r"}" \
+                        + os.linesep
+                    self.code += r"\resumeItemListStart" + os.linesep
+                    tabs += 4
+                    for item in job['details']:
+                        self.code += (" "*tabs) + r"\resumeItem{" + latexify(item) + r"}" + os.linesep
+                    tabs -= 4
+                    self.code += r"\resumeItemListEnd" + os.linesep
+                    tabs -= 4
+            else:
+                job = exp['jobs'][0]
+                self.code += r"\resumeSubheading" \
+                    + r"{" + latexify(exp['company'] or '') + r"}"  \
+                    + r"{" + latexify(job['time'] or '') + r"}" \
+                    + r"{" + latexify(job['title'] or '') + r"}" \
+                    + r"{" + latexify(job['location'] or '') + r"}" \
+                    + os.linesep
+                self.code += r"\resumeItemListStart" + os.linesep
+                tabs += 4
+                for item in job['details']:
+                    self.code += (" "*tabs) + r"\resumeItem{" + latexify(item) + r"}" + os.linesep
+                tabs -= 4
+                self.code += r"\resumeItemListEnd" + os.linesep
+            
+            self.code += os.linesep
+        
         self.code += r"\resumeSubHeadingListEnd" + os.linesep
     
     def add_page_break(self):
@@ -243,6 +324,52 @@ if __name__ == '__main__':
                 'Major GPA: 3.95',
                 'Coursework: Machine Learning & Artificial Intelligence, 4% acceptance rate',
             ],
+        },
+        {
+            "school": 'Unknown',
+            "time": 'Expected Graduation: December 2026',
+            "degree": 'Master of Science in Computer Science',
+            "location": 'Boston, MA',
+            "details": [
+                'Major GPA: 3.952',
+                'Coursework: Machine Learning & Artificial Intelligence, 4% acceptance rate',
+            ],
+        }
+    ])
+    resume.add_work_experience([
+        {
+            "company": "Company",
+            "jobs": [
+                {
+                    "time": "June 2021 - August 2021",
+                    "title": "Software Engineer Intern",
+                    "location": "Boston, MA",
+                    "details": [
+                        "Developed a web application to manage data",
+                        "Implemented a feature to allow users to upload files"
+                    ]
+                }
+            ]
+        },
+        {
+            "company": "Company",
+            "jobs": [
+                {
+                    "time": "June 2021 - August 2021",
+                    "title": "Software Engineer Intern",
+                    "details": [
+                        "Developed a web application to manage data",
+                        "Implemented a feature to allow users to upload files"
+                    ]
+                },
+                {
+                    "time": "June 2021 - August 2021",
+                    "title": "Software Engineer Intern",
+                    "details": [
+                        "Developed a web application to manage data",
+                    ]
+                }
+            ]
         }
     ])
     print(resume.get_complete_latex())
