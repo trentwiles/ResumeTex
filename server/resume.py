@@ -293,13 +293,13 @@ class Resume:
     def add_skills(self, skills):
         self.code += os.linesep + r"\section{Skills}" + os.linesep
         self.code += r"\begin{itemize}[leftmargin=0.15in, label={}]" + os.linesep
-        self.code += r"    \small{\item" + os.linesep
+        self.code += r"    \small{\item{" + os.linesep
         tabs = 4
         for i, skill in enumerate(skills):
             self.code += " "*tabs + r"\textbf{"+ skill['title'] +r"}{: " + latexify(skill['items']) + r"}"\
                 + (r"" if i == len(skills)-1 else r"\\") + os.linesep
         self.code += r"}}" + os.linesep + r"\end{itemize}" + os.linesep
-        
+
     def add_page_break(self):
         self.code += r"\pagebreak" + os.linesep
         
@@ -308,7 +308,7 @@ class Resume:
             + os.linesep + self.code + os.linesep + r"\end{document}"
     
 if __name__ == '__main__':
-    resume = Resume(font_size=11, font='fira')
+    resume = Resume(font_size=11)
     resume.add_personal_info({
         "name": "Anish Sahoo",
         "phone": "123-456-7890",
