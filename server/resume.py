@@ -187,8 +187,8 @@ class Resume:
             ],
         }
     ]'''
-    def add_education(self, education):
-        self.code += os.linesep + r"\section{Education}" + os.linesep
+    def add_education(self, education, title="Education"):
+        self.code += os.linesep + r"\section{" + title + r"}" + os.linesep
         self.code += r"\resumeSubHeadingListStart" + os.linesep
         tabs = 0
         for edu in education:
@@ -248,8 +248,8 @@ class Resume:
         }
     ]
     '''
-    def add_work_experience(self, work_experience):
-        self.code += os.linesep + r"\section{Experience}" + os.linesep
+    def add_work_experience(self, work_experience, title="Experience"):
+        self.code += os.linesep + r"\section{" + title + r"}" + os.linesep
         self.code += r"\resumeSubHeadingListStart" + os.linesep
         tabs = 0
         for exp in work_experience:
@@ -290,8 +290,8 @@ class Resume:
         
         self.code += r"\resumeSubHeadingListEnd" + os.linesep
     
-    def add_skills(self, skills):
-        self.code += os.linesep + r"\section{Skills}" + os.linesep
+    def add_skills(self, skills, title="Skills"):
+        self.code += os.linesep + r"\section{" + title + r"}" + os.linesep
         self.code += r"\begin{itemize}[leftmargin=0.15in, label={}]" + os.linesep
         self.code += r"    \small{\item{" + os.linesep
         tabs = 4
@@ -391,5 +391,5 @@ if __name__ == '__main__':
             "title": "Technologies",
             "items": "React, Node.js, Docker"
         }
-    ])
+    ], "Technical Skills")
     print(resume.get_complete_latex())
