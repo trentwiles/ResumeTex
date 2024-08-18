@@ -296,10 +296,32 @@ class Resume:
         self.code += r"    \small{\item{" + os.linesep
         tabs = 4
         for i, skill in enumerate(skills):
-            print(skill)    
+            if type(skill['items']) == str:
+                raise ValueError("Items should be a list")
             self.code += " "*tabs + r"\textbf{"+ skill['title'] +r"}{: " +  ", ".join(map(lambda a: latexify(a), skill['items'])) + r"}"\
                 + (r"" if i == len(skills)-1 else r"\\") + os.linesep
         self.code += r"}}" + os.linesep + r"\end{itemize}" + os.linesep
+        
+    def add_projects(self, projects, title="Projects"):
+        self.code += os.linesep + r"\section{" + title + r"}" + os.linesep
+        self.code += r"\resumeSubHeadingListStart" + os.linesep
+        tabs = 0
+        for project in projects:
+            tabs += 4
+            self.code += r"\resumeProjectHeading" + os.linesep \
+                + " "*tabs + r"{ \textbf{" + latexify(project['title'] or '') + r"}}"  \
+                + " "*tabs + r"$|$ \emph{" + latexify(project.get('subtitle', '')) + r"}" \
+                + " "*tabs + r"{" + latexify(project.get('time', '')) + r"}" \
+                + os.linesep        
+            tabs -= 4
+            self.code += r"\resumeItemListStart" + os.linesep
+            tabs += 4
+            for item in project['details']:
+                self.code += (" "*tabs) + r"\resumeItem{" + latexify(item) + r"}" + os.linesep
+            tabs -= 4
+            self.code += r"\resumeItemListEnd" + os.linesep
+    
+        self.code += r"\resumeSubHeadingListEnd" + os.linesep    
 
     def add_page_break(self):
         self.code += r"\pagebreak" + os.linesep
@@ -383,14 +405,32 @@ if __name__ == '__main__':
             ]
         }
     ])
+    resume.add_projects([
+        {
+            "title": "Project",
+            "subtitle": "Subtitle",
+            "time": "June 2021 - August 2021",
+            "details": [
+                "Developed a web application to manage data",
+                "Implemented a feature to allow users to upload files"
+            ]
+        },
+        {
+            "title": "Project",
+            "details": [
+                "Developed a web application to manage data",
+                "Implemented a feature to allow users to upload files"
+            ]
+        }
+    ])
     resume.add_skills([
         {
             "title": "Languages",
-            "items": "Python, Java, C++"
+            "items": ["Python", "Java", "C++"]
         },
         {
             "title": "Technologies",
-            "items": "React, Node.js, Docker"
+            "items": ["React", "Node.js", "Docker"]
         }
     ], "Technical Skills")
     print(resume.get_complete_latex())
