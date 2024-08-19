@@ -309,8 +309,8 @@ class Resume:
         for project in projects:
             tabs += 4
             self.code += r"\resumeProjectHeading" + os.linesep \
-                + " "*tabs + r"{ \textbf{" + latexify(project['title'] or '') + r"}}"  \
-                + " "*tabs + r"$|$ \emph{" + latexify(project.get('subtitle', '')) + r"}" \
+                + " "*tabs + r"{ \textbf{" + latexify(project['title'] or '') + r"}"  \
+                + " "*tabs + r"$|$ \emph{" + latexify(project.get('subtitle', '')) + r"}}" \
                 + " "*tabs + r"{" + latexify(project.get('time', '')) + r"}" \
                 + os.linesep        
             tabs -= 4
@@ -322,6 +322,16 @@ class Resume:
             self.code += r"\resumeItemListEnd" + os.linesep
     
         self.code += r"\resumeSubHeadingListEnd" + os.linesep    
+        
+    def add_interests(self, interests, title="Interests"):
+        self.code += os.linesep + r"\section{" + title + r"}" + os.linesep
+        self.code += r"\resumeItemListStart" + os.linesep
+        tabs = 4
+        for item in interests:
+            item = latexify(item)    
+        self.code += (" "*tabs) + r"\resumeItem{" + ", ".join(interests) + r"}" + os.linesep
+        tabs -= 4
+        self.code += r"\resumeItemListEnd" + os.linesep
 
     def add_page_break(self):
         self.code += r"\pagebreak" + os.linesep
@@ -433,4 +443,6 @@ if __name__ == '__main__':
             "items": ["React", "Node.js", "Docker"]
         }
     ], "Technical Skills")
+    
+    resume.add_interests(["Reading", "Gaming", "Traveling"])
     print(resume.get_complete_latex())
