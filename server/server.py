@@ -16,16 +16,21 @@ app.add_middleware(
 async def root():
     return {"message": "Hello World"}
 
-@app.post("/predict")
-async def predict(data: dict):
-    print(data.keys())
+@app.post("/tex")
+async def predict(data: list):
     latex = Resume() if 'font' not in data else Resume(data['font'])
-    for key, value in data.items(): 
-        match key:
-            case "personal_info": latex.add_personal_info(value)
-            case "education" : latex.add_education(value)
-            case "experience" : latex.add_work_experience(value)
-            case "skills" : latex.add_skills(value)
-            # case "projects" : latex.add_projects(value)
-            # case "interests" : latex.add_interests(value)
+    for item in data:
+        match item['type']:
+            case 1:
+                latex.add_personal_info(item['data'])
+            case 2:
+                latex.add_education(item['data'])
+            case 3:
+                latex.add_work_experience(item['data'])
+            case 4:
+                latex.add_skills(item['data'])
+            case 5:
+                latex.add_projects(item['data'])
+            case 6:
+                latex.add_interests(item['data'])
     return latex.get_complete_latex()
