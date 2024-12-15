@@ -39,8 +39,9 @@
   "projects": [
     {
       "title": "Project 1",
+      "subtitle": "Subtitle",
       "time": "January 2022 - March 2022",
-      "description": [
+      "details": [
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec auctor, nunc nec ultricies.",
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec auctor, nunc nec ultricies."
       ],
@@ -49,7 +50,7 @@
     {
       "title": "Project 2",
       "time": "April 2022 - June 2022",
-      "description": [
+      "details": [
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec auctor, nunc nec ultricies.",
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec auctor, nunc nec ultricies."
       ],
