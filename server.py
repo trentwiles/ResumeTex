@@ -22,11 +22,20 @@ def cleanup():
 async def root():
     return FileResponse("public/index.html")
 
+@app.get("/api/v1/text")
+async def predict(data: dict):
+    resume = ResumeMaker()
+    return resume.get_complete_latex(data)
 
 @app.get("/api/v1/tex")
 async def predict(data: dict):
     resume = ResumeMaker()
-    return resume.get_complete_latex(data)
+    latex_content = resume.get_complete_latex(data)
+    return FileResponse(
+        content=latex_content.encode(),
+        media_type='text/plain',
+        filename='resume.tex'
+    )
 
 @app.post("/api/v1/pdf")
 async def get_pdf(data: dict, background_tasks: BackgroundTasks):
