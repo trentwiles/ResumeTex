@@ -4,9 +4,6 @@ from resume.resume_maker import ResumeMaker
 from fastapi import HTTPException
 from fastapi.responses import FileResponse
 
-import os
-
-
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
@@ -19,15 +16,15 @@ app.add_middleware(
 
 @app.get("/")
 async def root():
-    return {"message": "Hello World"}
+    return FileResponse("public/index.html")
 
 
-@app.get("/tex")
+@app.get("/api/v1/tex")
 async def predict(data: dict):
     resume = ResumeMaker(data)
     return resume.get_complete_latex()
 
-@app.post("/pdf")
+@app.post("/api/v1/pdf")
 async def get_pdf(data: dict):
     resume = ResumeMaker(data)
     try:
