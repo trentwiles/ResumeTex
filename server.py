@@ -21,16 +21,16 @@ async def root():
 
 @app.get("/api/v1/tex")
 async def predict(data: dict):
-    resume = ResumeMaker(data)
-    return resume.get_complete_latex()
+    resume = ResumeMaker()
+    return resume.get_complete_latex(data)
 
 @app.post("/api/v1/pdf")
 async def get_pdf(data: dict):
-    resume = ResumeMaker(data)
+    resume = ResumeMaker()
     try:
-        pdf_path = resume.generate_pdf()
+        pdf_path = resume.generate_pdf(data)
     except RuntimeError as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=f"Failed to generate PDF: {str(e)}")
     
     response = FileResponse(
         path=pdf_path,
