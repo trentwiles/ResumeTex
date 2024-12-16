@@ -33,8 +33,8 @@
     <div class="usage">
       <h2>How to use?</h2>
       <p>
-        You can use the API by sending a POST request to
-        <code>https://resumetex.asahoo.dev/api/</code> with the following JSON
+        You can use the API by sending a GET request to
+        <code>https://resumetex.asahoo.dev/api/v1/pdf</code> with the following JSON
         body:
       </p>
       <pre>
@@ -104,12 +104,12 @@
     </div>
     <div>
       <p>
-        Alterntively, you can use curl or wget to send a POST request to the
+        Alterntively, you can use curl or wget to send a GET request to the
         API, attaching a json file as the body:
       </p>
       <pre>
           <code class="language-sh">
-curl -X POST -H "Content-Type: application/json" -d # finish this
+curl -X GET -H "Content-Type: application/json" -d # finish this
           </code>
       </pre>
     </div>

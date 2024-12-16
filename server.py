@@ -39,7 +39,7 @@ async def predict(data: dict):
     )
 
 
-@app.post("/api/v1/pdf")
+@app.get("/api/v1/pdf")
 async def get_pdf(data: dict, background_tasks: BackgroundTasks):
     resume = ResumeMaker()
     try:
