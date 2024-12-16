@@ -6,7 +6,125 @@
     <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"></script>
   </head>
   <body>
-    <h1>Resume API</h1>
-    <p>API for resume data</p>
+    <h1 font="alt">The ResumeTex API</h1>
+    <p class="author">
+      <a href="https://asahoo.dev">Anish Sahoo</a> <br />
+      December 15, 2024
+    </p>
+    <div class="abstract">
+      <h2>What is this?</h2>
+      <p>
+        This is a fast way to create resumes. All it needs is a GET request with your
+        resume in JSON format and it will generate a <a target="_blank" rel="noopener noreferrer" href="https://asahoo.dev/resume.pdf">nicely formatted</a> Resume for you. You can also
+        generate the Latex file if you want to make any changes manually.
+      </p>
+    </div>
+    <div class="endpoints">
+      <h2>Endpoints</h2>
+      <p>The API has three endpoints:</p>
+      <ul>
+        <li><code>/api/v1/tex</code> - Generates a LaTeX file</li>
+        <li><code>/api/v1/pdf</code> - Generates a PDF file</li>
+        <li><code>/api/v1/text</code> - Generates latex in text format (suitable if downloading a file is not intended)</li>
+      </ul>
+      <p>All endpoints accept GET requests with JSON data at <code>https://resumetex.asahoo.dev</code></p>
+    </div>
+
+    <div class="usage">
+      <h2>How to use?</h2>
+      <p>
+        You can use the API by sending a POST request to
+        <code>https://resumetex.asahoo.dev/api/</code> with the following JSON
+        body:
+      </p>
+      <pre>
+        <code class="language-js">
+{
+  "name": "Anish Sahoo",
+  "email": "",
+  "phone": "123-456-7890",
+  "address": "1234 Elm St, Springfield, IL",
+  "education": [
+    {
+      "school": "University of Illinois at Urbana-Champaign",
+      "degree": "Bachelor of Science in Computer Science",
+      "graduation": "May 2022",
+      "gpa": "3.8/4.0",
+      "courses": [
+        "Data Structures",
+        "Algorithms",
+        "Computer Architecture"
+      ]
+    }
+  ],
+  "experience": [
+    {
+      "company": "Google",
+      "title": "Software Engineering Intern",
+      "start": "May 2021",
+      "end": "August 2021",
+      "description": "Worked on the Google Search team."
+    }
+  ],
+  "projects": [
+    {
+      "name": "ResumeTex",
+      "description": "A fast way to create resumes for CS Majors."
+    }
+  ],
+  "skills": [
+    "Python",
+    "Java",
+    "C++"
+  ]
+}
+</code>
+      </pre>
+      <p>
+        The API will return a JSON response with the URL to the generated PDF
+        and tex file.
+      </p>
+    </div>
+    <div>
+      <fieldset id="textarea">
+        <legend>Enter your resume in JSON format:</legend>
+        <label for="json">JSON:</label>
+        <textarea
+          id="json"
+          rows="10"
+          cols="50"
+          placeholder="Paste in your resume"
+        ></textarea>
+        <p></p>
+        <button onclick="generate()">Generate Latex (.tex)</button>
+        <button onclick="generate()">Generate PDF</button>
+        <button onclick="generate()">Generate Latex (text)</button>
+        <button onclick="clear()">Clear</button>
+      </fieldset>
+    </div>
+    <div>
+      <p>
+        Alterntively, you can use curl or wget to send a POST request to the
+        API, attaching a json file as the body:
+      </p>
+      <pre>
+          <code class="language-sh">
+curl -X POST -H "Content-Type: application/json" -d # finish this
+          </code>
+      </pre>
+    </div>
+    <button id="dark-mode-toggle">Switch Theme</button>
+    <a href="#top">Back to top</a>
   </body>
+  <style>
+    textarea {
+      resize: none;
+    }
+  </style>
+  <script>
+    const toggleButton = document.querySelector("#dark-mode-toggle");
+    toggleButton.addEventListener("click", () => {
+      document.body.classList.toggle("latex-dark");
+    });
+  </script>
 </html>
