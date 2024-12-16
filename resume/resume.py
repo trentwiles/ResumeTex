@@ -435,7 +435,7 @@ class Resume:
 
     def add_page_break(self):
         self.code += r"\pagebreak" + os.linesep
-        
+
     def get_complete_latex(self):
         return (
             self.preamble

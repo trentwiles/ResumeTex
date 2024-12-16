@@ -3,19 +3,20 @@ import subprocess
 import tempfile
 from resume.resume import Resume
 
+
 class ResumeMaker(Resume):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-    
+
     def generate_latex(self, data):
         """
         Generate LaTeX code for the resume.
-        
+
         Args:
             data (dict): A dictionary containing the resume data (json).
         """
         resume = Resume(font=data.get("font", ""), font_size=data.get("font_size", 11))
-            
+
         for key, value in data.items():
             match key:
                 case "personal_info":
@@ -34,17 +35,17 @@ class ResumeMaker(Resume):
                     resume.add_page_break()
                 case _:
                     print(f"Unknown key: {key}")
-        
+
         return resume.get_complete_latex()
-    
+
     def generate_pdf(self, data):
         """
         Generate a PDF file for the resume.
-        
+
         Args:
             data (dict): A dictionary containing the resume data (json).
         """
-        temp_dir = os.path.join(os.getcwd(), 'temp')
+        temp_dir = os.path.join(os.getcwd(), "temp")
         os.makedirs(temp_dir, exist_ok=True)
 
         tmpdirname = tempfile.mkdtemp(dir=temp_dir)
@@ -61,7 +62,7 @@ class ResumeMaker(Resume):
                     cwd=tmpdirname,
                     stdout=subprocess.PIPE,
                     stderr=subprocess.PIPE,
-                    check=True
+                    check=True,
                 )
         except subprocess.CalledProcessError as e:
             error_msg = e.stderr.decode()
@@ -69,9 +70,9 @@ class ResumeMaker(Resume):
 
         if not os.path.exists(pdf_path):
             raise RuntimeError("PDF file was not created.")
-        
+
         return pdf_path
-    
+
     @staticmethod
     def clean_up_temp_files():
         """

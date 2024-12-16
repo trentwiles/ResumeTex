@@ -1,6 +1,7 @@
 import json
 import requests
 
+
 def generate_resume(json_file, output_file="resume.pdf"):
     try:
         with open(json_file, "r") as file:
@@ -17,7 +18,7 @@ def generate_resume(json_file, output_file="resume.pdf"):
     try:
         headers = {"Content-Type": "application/json"}
         response = requests.post(url, json=data, headers=headers)
-        
+
         if response.status_code == 200:
             with open(output_file, "wb") as pdf_file:
                 pdf_file.write(response.content)
@@ -27,6 +28,7 @@ def generate_resume(json_file, output_file="resume.pdf"):
             print(f"Response: {response.text}")
     except requests.RequestException as e:
         print(f"An error occurred while making the request: {e}")
+
 
 if __name__ == "__main__":
     json_file_name = "sample_input.json"

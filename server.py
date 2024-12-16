@@ -14,6 +14,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 def cleanup():
     ResumeMaker.clean_up_temp_files()
 
@@ -22,20 +23,21 @@ def cleanup():
 async def root():
     return FileResponse("public/index.html")
 
+
 @app.get("/api/v1/text")
 async def predict(data: dict):
     resume = ResumeMaker()
     return resume.get_complete_latex(data)
+
 
 @app.get("/api/v1/tex")
 async def predict(data: dict):
     resume = ResumeMaker()
     latex_content = resume.get_complete_latex(data)
     return FileResponse(
-        content=latex_content.encode(),
-        media_type='text/plain',
-        filename='resume.tex'
+        content=latex_content.encode(), media_type="text/plain", filename="resume.tex"
     )
+
 
 @app.post("/api/v1/pdf")
 async def get_pdf(data: dict, background_tasks: BackgroundTasks):
@@ -44,12 +46,10 @@ async def get_pdf(data: dict, background_tasks: BackgroundTasks):
         pdf_path = resume.generate_pdf(data)
     except RuntimeError as e:
         raise HTTPException(status_code=500, detail=f"Failed to generate PDF: {str(e)}")
-    
+
     background_tasks.add_task(cleanup)
     response = FileResponse(
-        path=pdf_path,
-        media_type='application/pdf',
-        filename='resume.pdf'
+        path=pdf_path, media_type="application/pdf", filename="resume.pdf"
     )
-    
+
     return response
