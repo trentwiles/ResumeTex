@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>Resume API</title>
+    <title>ResumeTex</title>
     <link rel="stylesheet" href="https://latex.vercel.app/style.css" />
     <link rel="stylesheet" href="https://latex.vercel.app/prism/prism.css" />
     <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"></script>
@@ -14,9 +14,31 @@
     <div class="abstract">
       <h2>What is this?</h2>
       <p>
-        This is a fast way to create resumes. All it needs is a GET request with your
-        resume in JSON format and it will generate a <a target="_blank" rel="noopener noreferrer" href="https://asahoo.dev/resume.pdf">nicely formatted</a> Resume for you. You can also
-        generate the Latex file if you want to make any changes manually.
+        This is a fast way to create resumes. All it needs is a GET request with
+        your resume in JSON format and it will generate a nicely formatted<label
+          for="sn-1"
+          class="sidenote-toggle sidenote-number"
+        ></label>
+        <input type="checkbox" id="sn-1" class="sidenote-toggle" />
+        <span class="sidenote">
+          This refers to
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://www.overleaf.com/latex/templates/jakes-resume/syzfjbzwjncs"
+            >Jake's Resume</a
+          >, a widely used resume template. See
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://asahoo.dev/resume.pdf"
+            >my resume</a
+          >
+          made with that template</span
+        >
+
+        resume for you. You can also generate the Latex file if you want to make
+        any changes manually.
       </p>
     </div>
     <div class="endpoints">
@@ -25,17 +47,24 @@
       <ul>
         <li><code>/api/v1/tex</code> - Generates a LaTeX file</li>
         <li><code>/api/v1/pdf</code> - Generates a PDF file</li>
-        <li><code>/api/v1/text</code> - Generates latex in text format (suitable if downloading a file is not intended)</li>
+        <li>
+          <code>/api/v1/text</code> - Generates latex in text format (suitable
+          if downloading a file is not intended)
+        </li>
       </ul>
-      <p>All endpoints accept GET requests with JSON data at <code>https://resumetex.asahoo.dev</code></p>
+      <p>
+        All endpoints accept GET requests with JSON data at
+        <code>https://resumetex.asahoo.dev</code>
+      </p>
     </div>
 
     <div class="usage">
       <h2>How to use?</h2>
       <p>
-        You can use the API by sending a GET request to
-        <code>https://resumetex.asahoo.dev/api/v1/pdf</code> with the following JSON
-        body:
+        You can use the API by sending a GET request to either of our endpoints
+        at<br />
+        <code>https://resumetex.asahoo.dev/{REPLACE_WITH_API_ENDPOINT}</code>
+        with your resume formatted in the following way:
       </p>
       <pre>
         <code class="language-js">
@@ -77,15 +106,15 @@
     "Java",
     "C++"
   ]
-}
-</code>
+}</code>
       </pre>
       <p>
         The API will return a JSON response with the URL to the generated PDF
         and tex file.
       </p>
     </div>
-    <div>
+    <div class="tool">
+      <h2>Too lazy for all that? Use this:</h2>
       <fieldset id="textarea">
         <legend>Enter your resume in JSON format:</legend>
         <label for="json">JSON:</label>
@@ -104,17 +133,25 @@
     </div>
     <div>
       <p>
-        Alterntively, you can use curl or wget to send a GET request to the
-        API, attaching a json file as the body:
+        Alterntively, you can use curl or wget to send a GET request to the API,
+        attaching a json file as the body:
       </p>
       <pre>
           <code class="language-sh">
-curl -X GET -H "Content-Type: application/json" -d # finish this
-          </code>
+curl -X GET -H "Content-Type: application/json" -d # finish this</code>
       </pre>
     </div>
-    <button id="dark-mode-toggle">Switch Theme</button>
-    <a href="#top">Back to top</a>
+
+    <div>
+      <h2>References:</h2>
+      <p>I will finish this later.</p>
+    </div>
+
+    <div class="footnotes">
+      <br />
+      <button id="dark-mode-toggle">Switch Theme</button>
+      <a href="#top">Back to top</a>
+    </div>
   </body>
   <style>
     textarea {
