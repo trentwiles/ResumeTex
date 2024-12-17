@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="https://latex.vercel.app/style.css" />
     <link rel="stylesheet" href="https://latex.vercel.app/prism/prism.css" />
     <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"></script>
+    <script defer data-domain="resumetex.asahoo.dev" src="https://analytics.asahoo.dev/js/script.js"></script>
   </head>
   <body>
     <h1 font="alt">The ResumeTex API</h1>
@@ -14,7 +15,7 @@
     <div class="abstract">
       <h2>What is this?</h2>
       <p>
-        This is a fast way to create resumes. All it needs is a GET request with
+        This is a fast way to create resumes. All it needs is a POST request with
         your resume in JSON format and it will generate a nicely formatted<label
           for="sn-1"
           class="sidenote-toggle sidenote-number"
@@ -23,13 +24,13 @@
         <span class="sidenote">
           This refers to
           <a
-            target="_blank"
+            tarPOST="_blank"
             rel="noopener noreferrer"
             href="https://www.overleaf.com/latex/templates/jakes-resume/syzfjbzwjncs"
             >Jake's Resume</a
           >, a widely used resume template. See
           <a
-            target="_blank"
+            tarPOST="_blank"
             rel="noopener noreferrer"
             href="https://asahoo.dev/resume.pdf"
             >my resume</a
@@ -43,6 +44,7 @@
     </div>
     <div class="endpoints">
       <h2>Endpoints</h2>
+      <p>The endpoint URL: <code>https://resumetex.asahoo.dev</code></p>
       <p>The API has three endpoints:</p>
       <ul>
         <li><code>/api/v1/tex</code> - Generates a LaTeX file</li>
@@ -53,7 +55,7 @@
         </li>
       </ul>
       <p>
-        All endpoints accept GET requests with JSON data at
+        All endpoints accept POST requests with JSON data at
         <code>https://resumetex.asahoo.dev</code>
       </p>
     </div>
@@ -61,7 +63,7 @@
     <div class="usage">
       <h2>How to use?</h2>
       <p>
-        You can use the API by sending a GET request to either of our endpoints
+        You can use the API by sending a POST request to either of our endpoints
         at<br />
         <code>https://resumetex.asahoo.dev/{REPLACE_WITH_API_ENDPOINT}</code>
         with your resume formatted in the following way:
@@ -75,10 +77,10 @@
   "address": "1234 Elm St, Springfield, IL",
   "education": [
     {
-      "school": "University of Illinois at Urbana-Champaign",
-      "degree": "Bachelor of Science in Computer Science",
-      "graduation": "May 2022",
-      "gpa": "3.8/4.0",
+      "school": "school name",
+      "degree": "degree name",
+      "graduation": "graduation date/info",
+      "gpa": "0.0/4.0",
       "courses": [
         "Data Structures",
         "Algorithms",
@@ -88,11 +90,11 @@
   ],
   "experience": [
     {
-      "company": "Google",
+      "company": "Company",
       "title": "Software Engineering Intern",
-      "start": "May 2021",
-      "end": "August 2021",
-      "description": "Worked on the Google Search team."
+      "start": "May 2024",
+      "end": "August 2024",
+      "description": "Worked on the Company team."
     }
   ],
   "projects": [
@@ -103,8 +105,7 @@
   ],
   "skills": [
     "Python",
-    "Java",
-    "C++"
+    "JavaScript",
   ]
 }</code>
       </pre>
@@ -125,7 +126,7 @@
           placeholder="Paste in your resume"
         ></textarea>
         <p></p>
-        <button onclick="generate()">Generate Latex (.tex)</button>
+        <button onclick="generateTex()">Generate Latex (.tex)</button>
         <button onclick="generate()">Generate PDF</button>
         <button onclick="generate()">Generate Latex (text)</button>
         <button onclick="clear()">Clear</button>
@@ -133,12 +134,12 @@
     </div>
     <div>
       <p>
-        Alterntively, you can use curl or wget to send a GET request to the API,
+        Alterntively, you can use curl or wget to send a get request to the API,
         attaching a json file as the body:
       </p>
       <pre>
           <code class="language-sh">
-curl -X GET -H "Content-Type: application/json" -d # finish this</code>
+curl -X get -H "Content-Type: application/json" -d # finish this</code>
       </pre>
     </div>
 
@@ -163,5 +164,23 @@ curl -X GET -H "Content-Type: application/json" -d # finish this</code>
     toggleButton.addEventListener("click", () => {
       document.body.classList.toggle("latex-dark");
     });
+
+    async function generateTex() {
+      const json = document.getElementById('json').value;
+      const response = await fetch('https://resumetex.asahoo.dev/api/v1/tex', {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: json
+      });
+      const data = await response.text();
+      const newTab = window.open();
+      newTab.document.write(data);
+    }
+
+    function clear() {
+      document.getElementById('json').value = '';
+    }
   </script>
 </html>
