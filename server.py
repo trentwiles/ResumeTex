@@ -26,10 +26,10 @@ async def root():
     except Exception as e:
         return {"error": str(e)}
     
-@app.get("/docs")
+@app.get("/documentation")
 async def docs():
     try:
-        return FileResponse("public/docs.html")
+        return FileResponse("public/documentation.html")
     except Exception as e:
         return {"error": str(e)}
 
