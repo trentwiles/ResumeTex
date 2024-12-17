@@ -62,7 +62,7 @@ class Resume:
 \input{glyphtounicode}
 
 """
-            + font_set[font]
+            + font_set.get(font, "")
             + r"""
 
 \pagestyle{fancy}
@@ -156,7 +156,7 @@ class Resume:
                 "text": "linkedin.com/in/anish-sahoo"  
             }, 
             {
-                "url": "https://asahoo.dev"
+                "url": "https://asahoo.dev",
                 "text": "asahoo.dev"
             }
         ]
@@ -192,9 +192,9 @@ class Resume:
         for link in links:
             self.code += (
                 r"\href{"
-                + latexify(link["url"])
+                + latexify(link.get("url", ""))
                 + r"}{\underline{"
-                + latexify(link["text"])
+                + latexify(link.get("text", ""))
                 + r"}} $|$ "
                 + os.linesep
             )
@@ -225,23 +225,23 @@ class Resume:
             self.code += (
                 r"\resumeSubheading"
                 + r"{"
-                + latexify(edu["school"] or "")
+                + latexify(edu.get("school", ""))
                 + r"}"
                 + r"{"
-                + latexify(edu["time"] or "")
+                + latexify(edu.get("time", ""))
                 + r"}"
                 + r"{"
-                + latexify(edu["degree"] or "")
+                + latexify(edu.get("degree", ""))
                 + r"}"
                 + r"{"
-                + latexify(edu["location"] or "")
+                + latexify(edu.get("location", ""))
                 + r"}"
                 + os.linesep
             )
             tabs -= 4
             self.code += r"\resumeItemListStart" + os.linesep
             tabs += 4
-            for item in edu["details"]:
+            for item in edu.get("details", []):
                 self.code += (
                     (" " * tabs) + r"\resumeItem{" + latexify(item) + r"}" + os.linesep
                 )
@@ -295,32 +295,32 @@ class Resume:
         self.code += r"\resumeSubHeadingListStart" + os.linesep
         tabs = 0
         for exp in work_experience:
-            if len(exp["jobs"]) > 1:
+            if len(exp.get("jobs", [])) > 1:
                 self.code += (
                     r"\resumeSubheadingSmall"
                     + r"{"
-                    + latexify(exp["company"] or "")
+                    + latexify(exp.get("company", ""))
                     + r"}"
                     + r"{"
-                    + latexify(exp["jobs"][0]["time"] or "")
+                    + latexify(exp.get("jobs", [{}])[0].get("time", ""))
                     + r"}"
                 )
                 self.code += os.linesep
-                for job in exp["jobs"]:
+                for job in exp.get("jobs", []):
                     tabs += 4
                     self.code += (
                         r"\resumeSubSubheading"
                         + r"{"
-                        + latexify(job["title"] or "")
+                        + latexify(job.get("title", ""))
                         + r"}"
                         + r"{"
-                        + latexify(job["time"] or "")
+                        + latexify(job.get("time", ""))
                         + r"}"
                         + os.linesep
                     )
                     self.code += r"\resumeItemListStart" + os.linesep
                     tabs += 4
-                    for item in job["details"]:
+                    for item in job.get("details", []):
                         self.code += (
                             (" " * tabs)
                             + r"\resumeItem{"
@@ -332,26 +332,26 @@ class Resume:
                     self.code += r"\resumeItemListEnd" + os.linesep
                     tabs -= 4
             else:
-                job = exp["jobs"][0]
+                job = exp.get("jobs", [{}])[0]
                 self.code += (
                     r"\resumeSubheading"
                     + r"{"
-                    + latexify(exp["company"] or "")
+                    + latexify(exp.get("company", ""))
                     + r"}"
                     + r"{"
-                    + latexify(job["time"] or "")
+                    + latexify(job.get("time", ""))
                     + r"}"
                     + r"{"
-                    + latexify(job["title"] or "")
+                    + latexify(job.get("title", ""))
                     + r"}"
                     + r"{"
-                    + latexify(job["location"] or "")
+                    + latexify(job.get("location", ""))
                     + r"}"
                     + os.linesep
                 )
                 self.code += r"\resumeItemListStart" + os.linesep
                 tabs += 4
-                for item in job["details"]:
+                for item in job.get("details", []):
                     self.code += (
                         (" " * tabs)
                         + r"\resumeItem{"
@@ -372,14 +372,14 @@ class Resume:
         self.code += r"    \small{\item{" + os.linesep
         tabs = 4
         for i, skill in enumerate(skills):
-            if type(skill["items"]) == str:
+            if isinstance(skill.get("items", []), str):
                 raise ValueError("Items should be a list")
             self.code += (
                 " " * tabs
                 + r"\textbf{"
-                + skill["title"]
+                + latexify(skill.get("title", ""))
                 + r"}{: "
-                + ", ".join(map(lambda a: latexify(a), skill["items"]))
+                + ", ".join(map(lambda a: latexify(a), skill.get("items", [])))
                 + r"}"
                 + (r"" if i == len(skills) - 1 else r"\\")
                 + os.linesep
@@ -397,7 +397,7 @@ class Resume:
                 + os.linesep
                 + " " * tabs
                 + r"{ \textbf{"
-                + latexify(project["title"] or "")
+                + latexify(project.get("title", ""))
                 + r"}"
                 + " " * tabs
                 + r"$|$ \emph{"
@@ -425,10 +425,9 @@ class Resume:
         self.code += os.linesep + r"\section{" + title + r"}" + os.linesep
         self.code += r"\resumeItemListStart" + os.linesep
         tabs = 4
-        for item in interests:
-            item = latexify(item)
+        formatted_interests = [latexify(item) for item in interests]
         self.code += (
-            (" " * tabs) + r"\resumeItem{" + ", ".join(interests) + r"}" + os.linesep
+            (" " * tabs) + r"\resumeItem{" + ", ".join(formatted_interests) + r"}" + os.linesep
         )
         tabs -= 4
         self.code += r"\resumeItemListEnd" + os.linesep
@@ -445,3 +444,35 @@ class Resume:
             + os.linesep
             + r"\end{document}"
         )
+
+
+# sections = {
+#     "personal_info": [{
+#         "name": str,
+#         "phone": str,
+#         "email": str,
+#         "links": list,  # List of dicts with 'url' and 'text'
+#     }],
+#     "education": [{
+#         "school": str,
+#         "time": str,
+#         "degree": str,
+#         "location": str,
+#         "details": list,  # List of strings
+#     }],
+#     "work_experience": [{
+#         "company": str,
+#         "jobs": list,  # List of job dicts
+#     }],
+#     "skills": [{
+#         "title": str,
+#         "items": list,  # List of strings
+#     }],
+#     "projects": [{
+#         "title": str,
+#         "subtitle": str,
+#         "time": str,
+#         "details": list,  # List of strings
+#     }],
+#     "interests": list # List of strings
+# }
