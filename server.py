@@ -25,6 +25,13 @@ async def root():
         return FileResponse("public/index.html")
     except Exception as e:
         return {"error": str(e)}
+    
+@app.get("docs")
+async def docs():
+    try:
+        return FileResponse("public/docs.html")
+    except Exception as e:
+        return {"error": str(e)}
 
 
 @app.post("/api/v1/text")

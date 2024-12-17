@@ -165,20 +165,52 @@ curl -X get -H "Content-Type: application/json" -d # finish this</code>
       document.body.classList.toggle("latex-dark");
     });
 
-    async function generatePDF() {
+    async function generateTex() {
       const json = document.getElementById('json').value;
-      console.log('Sending generatePDF:\n', json);
-      const response = await fetch('/api/v1/pdf', {
+      const response = await fetch('/api/v1/tex', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: json
       });
-      const data = await response.text();
-      console.log('Data received\n', data);
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'resume.tex';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    }
+
+    async function generateText() {
+      const json = document.getElementById('json').value;
+      const response = await fetch('/api/v1/text', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: json
+      });
+      const text = await response.text();
       const newTab = window.open();
-      newTab.document.write(data);
+      newTab.document.body.textContent = text;
+    }
+
+    async function generatePDF() {
+      const json = document.getElementById('json').value;
+      console.log('Sending generatePDF:\n', json);
+      const response = await fetch('/api/v1/pdf', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: json
+      });
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      window.open(url, '_blank');
     }
 
     function clear() {
