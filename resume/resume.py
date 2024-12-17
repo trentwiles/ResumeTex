@@ -371,18 +371,29 @@ class Resume:
         self.code += r"\begin{itemize}[leftmargin=0.15in, label={}]" + os.linesep
         self.code += r"    \small{\item{" + os.linesep
         tabs = 4
+        # this is when skills is of this form:
+        # {
+        #     "skills": ["Python", "Java", "C++"]
+        # }
         if isinstance(skills, list) and isinstance(skills[0], str):
             self.code += (
                 " " * tabs
-                + ", ".join(map(lambda a: latexify(a), skills))
-                + r"}}"
-                + os.linesep
-                + r"\end{itemize}" + os.linesep
+                + ", ".join(map(lambda a: latexify(a), skills)) + os.linesep
             )
         else:
+            # this is when skills is of this form:
+            # {
+            #     "skills": [
+            #         {
+            #             "title": "Programming Languages",
+            #             "items": ["Python", "Java", "C++"]
+            #         },
+            #         {
+            #             "title": "Web Development",
+            #             "items": ["HTML", "CSS", "JavaScript"]
+            #         }
+            #     ]
             for i, skill in enumerate(skills):
-                if isinstance(skill.get("items", []), str):
-                    raise ValueError("Items should be a list")
                 self.code += (
                     " " * tabs
                     + r"\textbf{"
@@ -393,7 +404,7 @@ class Resume:
                     + (r"" if i == len(skills) - 1 else r"\\")
                     + os.linesep
                 )
-            self.code += r"}}" + os.linesep + r"\end{itemize}" + os.linesep
+        self.code += r"}}" + os.linesep + r"\end{itemize}" + os.linesep
 
     def add_projects(self, projects, title="Projects"):
         self.code += os.linesep + r"\section{" + title + r"}" + os.linesep
