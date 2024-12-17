@@ -17,13 +17,13 @@ class ResumeMaker(Resume):
         """
         resume = Resume(font=data.get("font", ""), font_size=data.get("font_size", 11))
 
+        resume.add_personal_info(data)
+        
         for key, value in data.items():
             match key:
-                case "personal_info":
-                    resume.add_personal_info(value)
                 case "education":
                     resume.add_education(value)
-                case "work_experience":
+                case "experience":
                     resume.add_work_experience(value)
                 case "skills":
                     resume.add_skills(value)

@@ -163,11 +163,11 @@ class Resume:
     }
     """
 
-    def add_personal_info(self, personal_info):
-        name = latexify(personal_info.get("name", ""))
-        phone = latexify(personal_info.get("phone", ""))
-        email = latexify(personal_info.get("email", ""))
-        links = personal_info.get("links", [])
+    def add_personal_info(self, resume):
+        name = latexify(resume.get("name", ""))
+        phone = latexify(resume.get("phone", ""))
+        email = latexify(resume.get("email", ""))
+        links = resume.get("links", [])
 
         self.code += r"\begin{center}" + os.linesep
 
