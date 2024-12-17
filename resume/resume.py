@@ -374,9 +374,8 @@ class Resume:
         if isinstance(skills, list) and isinstance(skills[0], str):
             self.code += (
                 " " * tabs
-                + ", ".join(map(lambda a: latexify(a), skill.get("items", [])))
-                + r"}"
-                + (r"" if i == len(skills) - 1 else r"\\")
+                + ", ".join(map(lambda a: latexify(a), skills))
+                + r"}}"
                 + os.linesep
                 + r"\end{itemize}" + os.linesep
             )
