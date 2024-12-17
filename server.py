@@ -31,7 +31,7 @@ async def root():
 async def predict(data: dict):
     try:
         resume = ResumeMaker()
-        return resume.get_complete_latex(data)
+        return resume.generate_latex(data)
     except Exception as e:
         return {"error": str(e)}
 
@@ -39,7 +39,7 @@ async def predict(data: dict):
 @app.post("/api/v1/tex")
 async def predict(data: dict):
     resume = ResumeMaker()
-    latex_content = resume.get_complete_latex(data)
+    latex_content = resume.generate_latex(data)
     return FileResponse(
         content=latex_content.encode(), media_type="text/plain", filename="resume.tex"
     )
@@ -48,10 +48,11 @@ async def predict(data: dict):
 @app.post("/api/v1/pdf")
 async def get_pdf(data: dict, background_tasks: BackgroundTasks):
     resume = ResumeMaker()
-    print('-'*40)
+    print('-'*80)
     print(data)
-    print('-'*40)
+    print('-'*80)
     print(type(data))
+    print(r"data['name']", data['name'])
     pdf_path = resume.generate_pdf(data)
     background_tasks.add_task(cleanup)
     return FileResponse(

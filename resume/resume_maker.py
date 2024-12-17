@@ -61,7 +61,7 @@ class ResumeMaker(Resume):
 
         with open(tex_path, "w") as tex_file:
             tex_file.write(self.generate_latex(data))
-
+            
         try:
             for _ in range(2):
                 _ = subprocess.run(

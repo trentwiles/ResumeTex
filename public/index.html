@@ -167,7 +167,7 @@ curl -X get -H "Content-Type: application/json" -d # finish this</code>
 
     async function generatePDF() {
       const json = document.getElementById('json').value;
-      console.log('Sending generatePDF:');
+      console.log('Sending generatePDF:\n', json);
       const response = await fetch('/api/v1/pdf', {
         method: 'POST',
         headers: {
