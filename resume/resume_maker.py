@@ -40,9 +40,19 @@ class ResumeMaker(Resume):
                     resume.add_interests(value)
                 case "page_break":
                     resume.add_page_break()
+                case "name":
+                    pass
+                case "font":
+                    pass
+                case "font_size":
+                    pass
+                case "email":
+                    pass
+                case "phone":
+                    pass
                 case _:
                     print(f"Unknown key: {key}")
-
+        print('resume.get_complete_latex() <<<\n', resume.get_complete_latex(), '\n>>>')
         return resume.get_complete_latex()
 
     def generate_pdf(self, data):
