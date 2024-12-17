@@ -371,7 +371,7 @@ class Resume:
         self.code += r"\begin{itemize}[leftmargin=0.15in, label={}]" + os.linesep
         self.code += r"    \small{\item{" + os.linesep
         tabs = 4
-        if isinstance(skills, str):
+        if isinstance(skills, list) and isinstance(skills[0], str):
             self.code += (
                 " " * tabs
                 + ", ".join(map(lambda a: latexify(a), skill.get("items", [])))
