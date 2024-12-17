@@ -4,7 +4,11 @@
     <link rel="stylesheet" href="https://latex.vercel.app/style.css" />
     <link rel="stylesheet" href="https://latex.vercel.app/prism/prism.css" />
     <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"></script>
-    <script defer data-domain="resumetex.asahoo.dev" src="https://analytics.asahoo.dev/js/script.js"></script>
+    <script
+      defer
+      data-domain="resumetex.asahoo.dev"
+      src="https://analytics.asahoo.dev/js/script.js"
+    ></script>
   </head>
   <body>
     <h1 font="alt">The ResumeTex API</h1>
@@ -15,8 +19,9 @@
     <div class="abstract">
       <h2>What is this?</h2>
       <p>
-        This is a fast way to create resumes. All it needs is a POST request with
-        your resume in JSON format and it will generate a nicely formatted<label
+        This is a fast way to create resumes. All it needs is a POST request
+        with your resume in JSON format and it will generate a nicely
+        formatted<label
           for="sn-1"
           class="sidenote-toggle sidenote-number"
         ></label>
@@ -66,49 +71,8 @@
         You can use the API by sending a POST request to either of our endpoints
         at<br />
         <code>https://resumetex.asahoo.dev/{REPLACE_WITH_API_ENDPOINT}</code>
-        with your resume formatted in the following way:
+        with your resume formatted in the <a href="docs.html">following way</a>:
       </p>
-      <pre>
-        <code class="language-js">
-{
-  "name": "Anish Sahoo",
-  "email": "",
-  "phone": "123-456-7890",
-  "address": "1234 Elm St, Springfield, IL",
-  "education": [
-    {
-      "school": "school name",
-      "degree": "degree name",
-      "graduation": "graduation date/info",
-      "gpa": "0.0/4.0",
-      "courses": [
-        "Data Structures",
-        "Algorithms",
-        "Computer Architecture"
-      ]
-    }
-  ],
-  "experience": [
-    {
-      "company": "Company",
-      "title": "Software Engineering Intern",
-      "start": "May 2024",
-      "end": "August 2024",
-      "description": "Worked on the Company team."
-    }
-  ],
-  "projects": [
-    {
-      "name": "ResumeTex",
-      "description": "A fast way to create resumes for CS Majors."
-    }
-  ],
-  "skills": [
-    "Python",
-    "JavaScript"
-  ]
-}</code>
-      </pre>
       <p>
         The API will return a JSON response with the URL to the generated PDF
         and tex file.
@@ -129,6 +93,7 @@
         <button onclick="generateTex()">Generate Latex (.tex)</button>
         <button onclick="generatePDF()">Generate PDF</button>
         <button onclick="generateText()">Generate Latex (text)</button>
+        <button onclick="insertSampleResume()">Insert Sample</button>
         <button onclick="clear()">Clear</button>
       </fieldset>
     </div>
@@ -166,32 +131,32 @@ curl -X get -H "Content-Type: application/json" -d # finish this</code>
     });
 
     async function generateTex() {
-      const json = document.getElementById('json').value;
-      const response = await fetch('/api/v1/tex', {
-        method: 'POST',
+      const json = document.getElementById("json").value;
+      const response = await fetch("/api/v1/tex", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        body: json
+        body: json,
       });
       const blob = await response.blob();
       const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
+      const a = document.createElement("a");
       a.href = url;
-      a.download = 'resume.tex';
+      a.download = "resume.tex";
       document.body.appendChild(a);
       a.click();
       a.remove();
     }
 
     async function generateText() {
-      const json = document.getElementById('json').value;
-      const response = await fetch('/api/v1/text', {
-        method: 'POST',
+      const json = document.getElementById("json").value;
+      const response = await fetch("/api/v1/text", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        body: json
+        body: json,
       });
       const text = await response.text();
       const newTab = window.open();
@@ -199,22 +164,129 @@ curl -X get -H "Content-Type: application/json" -d # finish this</code>
     }
 
     async function generatePDF() {
-      const json = document.getElementById('json').value;
-      console.log('Sending generatePDF:\n', json);
-      const response = await fetch('/api/v1/pdf', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: json
+      const json = document.getElementById("json").value;
+      console.log("Sending generatePDF:\n", json);
+      const response = await fetch("/api/v1/pdf", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: json,
       });
       const blob = await response.blob();
       const url = URL.createObjectURL(blob);
-      window.open(url, '_blank');
+      window.open(url, "_blank");
     }
 
     function clear() {
-      document.getElementById('json').value = '';
+      document.getElementById("json").value = "";
+    }
+
+    function insertSampleResume() {
+      const sampleResume = {
+        name: "Anish Sahoo",
+        phone: "123-456-7890",
+        email: "anish@email.email",
+        links: [
+          {
+            url: "https://www.linkedin.com/in/anish-sahoo",
+            text: "linkedin.com/in/anish-sahoo",
+          },
+          {
+            url: "https://asahoo.dev",
+            text: "asahoo.dev",
+          },
+        ],
+        education: [
+          {
+            school: "Northeastern University",
+            time: "Expected Graduation: December 2026",
+            degree: "Bachelor of Science in Computer Science",
+            location: "Boston, MA",
+            details: [
+              "Major GPA: 3.95",
+              "Coursework: Machine Learning, Artificial Intelligence",
+            ],
+          },
+          {
+            school: "Boston High School",
+            time: "Graduated: June 2022",
+            degree: "High School Diploma",
+            location: "Boston, MA",
+            details: ["GPA: 4.0", "Honors: Valedictorian"],
+          },
+        ],
+        experience: [
+          {
+            company: "Tech Solutions Inc.",
+            jobs: [
+              {
+                time: "June 2021 - August 2021",
+                title: "Software Engineer Intern",
+                location: "Boston, MA",
+                details: [
+                  "Developed a web application to manage data",
+                  "Implemented a feature to allow users to upload files",
+                ],
+              },
+            ],
+          },
+          {
+            company: "Innovative Tech",
+            jobs: [
+              {
+                time: "June 2020 - August 2020",
+                title: "Junior Developer",
+                location: "Remote",
+                details: [
+                  "Assisted in the development of a mobile application",
+                  "Collaborated with a team of developers to improve app performance",
+                ],
+              },
+            ],
+          },
+        ],
+        projects: [
+          {
+            title: "Personal Portfolio",
+            subtitle: "A personal website to showcase my projects and skills",
+            time: "January 2021 - Present",
+            details: [
+              "Built using HTML, CSS, and JavaScript",
+              "Includes a blog section where I write about my learning experiences",
+            ],
+          },
+          {
+            title: "E-commerce Platform",
+            subtitle: "A full-stack e-commerce platform",
+            time: "September 2020 - December 2020",
+            details: [
+              "Developed using Django and React",
+              "Implemented features such as user authentication, product listings, and a shopping cart",
+            ],
+          },
+        ],
+        interests: ["Reading", "Traveling", "Photography", "Coding"],
+        skills: [
+          {
+            title: "Programming Languages",
+            items: ["Python", "Java", "C++"],
+          },
+          {
+            title: "Web Development",
+            items: ["HTML", "CSS", "JavaScript"],
+          },
+          {
+            title: "Tools & Technologies",
+            items: ["Git", "Docker", "Kubernetes"],
+          },
+        ],
+      };
+      document.getElementById("json").value = JSON.stringify(
+        sampleResume,
+        null,
+        2
+      );
     }
   </script>
 </html>
