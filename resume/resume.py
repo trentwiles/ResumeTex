@@ -239,14 +239,16 @@ class Resume:
                 + os.linesep
             )
             tabs -= 4
-            self.code += r"\resumeItemListStart" + os.linesep
+            if len(edu.get("details", [])) > 0:
+                self.code += r"\resumeItemListStart" + os.linesep
             tabs += 4
             for item in edu.get("details", []):
                 self.code += (
                     (" " * tabs) + r"\resumeItem{" + latexify(item) + r"}" + os.linesep
                 )
             tabs -= 4
-            self.code += r"\resumeItemListEnd" + os.linesep
+            if len(edu.get("details", [])) > 0:
+                self.code += r"\resumeItemListEnd" + os.linesep
 
         self.code += r"\resumeSubHeadingListEnd" + os.linesep
 
@@ -318,7 +320,8 @@ class Resume:
                         + r"}"
                         + os.linesep
                     )
-                    self.code += r"\resumeItemListStart" + os.linesep
+                    if len(job.get("details", [])) > 0:
+                        self.code += r"\resumeItemListStart" + os.linesep
                     tabs += 4
                     for item in job.get("details", []):
                         self.code += (
@@ -329,7 +332,8 @@ class Resume:
                             + os.linesep
                         )
                     tabs -= 4
-                    self.code += r"\resumeItemListEnd" + os.linesep
+                    if len(job.get("details", [])) > 0:
+                        self.code += r"\resumeItemListEnd" + os.linesep
                     tabs -= 4
             else:
                 job = exp.get("jobs", [{}])[0]
@@ -349,7 +353,8 @@ class Resume:
                     + r"}"
                     + os.linesep
                 )
-                self.code += r"\resumeItemListStart" + os.linesep
+                if len(job.get("details", [])) > 0:
+                    self.code += r"\resumeItemListStart" + os.linesep
                 tabs += 4
                 for item in job.get("details", []):
                     self.code += (
@@ -360,7 +365,8 @@ class Resume:
                         + os.linesep
                     )
                 tabs -= 4
-                self.code += r"\resumeItemListEnd" + os.linesep
+                if len(job.get("details", [])) > 0:
+                    self.code += r"\resumeItemListEnd" + os.linesep
 
             self.code += os.linesep
 
@@ -408,7 +414,6 @@ class Resume:
 
     def add_projects(self, projects, title="Projects"):
         self.code += os.linesep + r"\section{" + title + r"}" + os.linesep
-        self.code += r"\resumeSubHeadingListStart" + os.linesep
         tabs = 0
         for project in projects:
             tabs += 4
@@ -430,19 +435,23 @@ class Resume:
                 + os.linesep
             )
             tabs -= 4
-            self.code += r"\resumeItemListStart" + os.linesep
+            if len(project.get("details", [""])) > 0:
+                self.code += r"\resumeItemListStart" + os.linesep
             tabs += 4
-            for item in project.get("details", []):
+            for item in project.get("details", [""]):
                 self.code += (
                     (" " * tabs) + r"\resumeItem{" + latexify(item) + r"}" + os.linesep
                 )
             tabs -= 4
-            self.code += r"\resumeItemListEnd" + os.linesep
+            if len(project.get("details", [""])) > 0:
+                self.code += r"\resumeItemListEnd" + os.linesep
 
         self.code += r"\resumeSubHeadingListEnd" + os.linesep
 
     def add_interests(self, interests, title="Interests"):
         self.code += os.linesep + r"\section{" + title + r"}" + os.linesep
+        if len(interests) == 0:
+            return
         self.code += r"\resumeItemListStart" + os.linesep
         tabs = 4
         formatted_interests = [latexify(item) for item in interests]

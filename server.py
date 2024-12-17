@@ -49,12 +49,8 @@ async def predict(data: dict):
 async def get_pdf(data: dict, background_tasks: BackgroundTasks):
     resume = ResumeMaker()
     print('-'*80)
-    print(data.keys())
-    print('-'*80)
     print(data)
     print('-'*80)
-    print(type(data))
-    print(r"data['name']", data['name'])
     pdf_path = resume.generate_pdf(data)
     background_tasks.add_task(cleanup)
     return FileResponse(
