@@ -126,8 +126,8 @@
           placeholder="Paste in your resume"
         ></textarea>
         <p></p>
-        <button onclick="generateTex()">Generate Latex (.tex)</button>
-        <button onclick="generate()">Generate PDF</button>
+        <button onclick="generate()">Generate Latex (.tex)</button>
+        <button onclick="generatePDF()">Generate PDF</button>
         <button onclick="generate()">Generate Latex (text)</button>
         <button onclick="clear()">Clear</button>
       </fieldset>
@@ -165,16 +165,18 @@ curl -X get -H "Content-Type: application/json" -d # finish this</code>
       document.body.classList.toggle("latex-dark");
     });
 
-    async function generateTex() {
+    async function generatePDF() {
       const json = document.getElementById('json').value;
-      const response = await fetch('https://resumetex.asahoo.dev/api/v1/tex', {
-        method: 'post',
+      console.log('Sending generatePDF:');
+      const response = await fetch('/api/v1/pdf', {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: json
       });
       const data = await response.text();
+      console.log('Data received\n', data);
       const newTab = window.open();
       newTab.document.write(data);
     }
