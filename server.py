@@ -45,6 +45,7 @@ async def predict(data: dict):
             content=latex_content.encode(), media_type="text/plain", filename="resume.tex"
         )
     except Exception as e:
+        print(e)
         return {"error": str(e)}
 
 
@@ -58,4 +59,5 @@ async def get_pdf(data: dict, background_tasks: BackgroundTasks):
             path=pdf_path, media_type="application/pdf", filename="resume.pdf"
         )
     except Exception as e:
+        print(e)
         return {"error": str(e)}
