@@ -48,6 +48,10 @@ async def predict(data: dict):
 @app.post("/api/v1/pdf")
 async def get_pdf(data: dict, background_tasks: BackgroundTasks):
     resume = ResumeMaker()
+    print('-'*40)
+    print(data)
+    print('-'*40)
+    print(type(data))
     pdf_path = resume.generate_pdf(data)
     background_tasks.add_task(cleanup)
     return FileResponse(
