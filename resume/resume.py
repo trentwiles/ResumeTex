@@ -217,6 +217,8 @@ class Resume:
     ]"""
 
     def add_education(self, education, title="Education"):
+        if len(education) == 0:
+            return
         self.code += os.linesep + r"\section{" + title + r"}" + os.linesep
         self.code += r"\resumeSubHeadingListStart" + os.linesep
         tabs = 0
@@ -293,6 +295,8 @@ class Resume:
     """
 
     def add_work_experience(self, work_experience, title="Experience"):
+        if len(work_experience) == 0:
+            return
         self.code += os.linesep + r"\section{" + title + r"}" + os.linesep
         self.code += r"\resumeSubHeadingListStart" + os.linesep
         tabs = 0
@@ -373,6 +377,8 @@ class Resume:
         self.code += r"\resumeSubHeadingListEnd" + os.linesep
 
     def add_skills(self, skills, title="Skills"):
+        if len (skills) == 0:
+            return
         self.code += os.linesep + r"\section{" + title + r"}" + os.linesep
         self.code += r"\begin{itemize}[leftmargin=0.15in, label={}]" + os.linesep
         self.code += r"    \small{\item{" + os.linesep
@@ -413,7 +419,10 @@ class Resume:
         self.code += r"}}" + os.linesep + r"\end{itemize}" + os.linesep
 
     def add_projects(self, projects, title="Projects"):
+        if len(projects) == 0:
+            return
         self.code += os.linesep + r"\section{" + title + r"}" + os.linesep
+        self.code += r"\resumeSubHeadingListStart" + os.linesep
         tabs = 0
         for project in projects:
             tabs += 4
