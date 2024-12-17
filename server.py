@@ -38,26 +38,18 @@ async def predict(data: dict):
 
 @app.post("/api/v1/tex")
 async def predict(data: dict):
-    try:
-        resume = ResumeMaker()
-        latex_content = resume.get_complete_latex(data)
-        return FileResponse(
-            content=latex_content.encode(), media_type="text/plain", filename="resume.tex"
-        )
-    except Exception as e:
-        print(e)
-        return {"error": str(e)}
+    resume = ResumeMaker()
+    latex_content = resume.get_complete_latex(data)
+    return FileResponse(
+        content=latex_content.encode(), media_type="text/plain", filename="resume.tex"
+    )
 
 
 @app.post("/api/v1/pdf")
 async def get_pdf(data: dict, background_tasks: BackgroundTasks):
-    try:
-        resume = ResumeMaker()
-        pdf_path = resume.generate_pdf(data)
-        background_tasks.add_task(cleanup)
-        return FileResponse(
-            path=pdf_path, media_type="application/pdf", filename="resume.pdf"
-        )
-    except Exception as e:
-        print(e)
-        return {"error": str(e)}
+    resume = ResumeMaker()
+    pdf_path = resume.generate_pdf(data)
+    background_tasks.add_task(cleanup)
+    return FileResponse(
+        path=pdf_path, media_type="application/pdf", filename="resume.pdf"
+    )
